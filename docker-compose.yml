@@ -1,0 +1,27 @@
+server:
+  build: ./app/server
+  volumes:
+    - ./app:/usr/src/app
+    - /usr/src/app/node_modules
+  ports:
+    - "3000:3000"
+  links:
+    - "db:mongo"
+
+client:
+  build: ./app/client
+  volumes:
+    - ./app:/usr/src/app
+    - /usr/src/app/client/node_modules
+  ports:
+    - "8080:8080"
+
+db:
+  image: mongo
+
+varnish:
+  build: ./varnish
+  ports:
+    - "80:80"
+  links:
+    - "server"
